@@ -31,8 +31,14 @@ def checkBestResponses():
             for key in influence:
                 if key[0]==country:
                     secondVote=votingRecords[key[1]][i]
-                    print(secondVote)
-                    value+=(int(secondVote)*influence[(country,key[1])])
+                    influenceVote=0
+                    if secondVote == "0":
+                        influenceVote = -1
+                    elif secondVote == "1":
+                        influenceVote = 1
+                    else:
+                        influenceVote = -.25
+                    value+=(influenceVote*influence[(country,key[1])])
             if value>=1 and votingRecords[country][i]=='1':
                 correctResponses+=1
             elif value<=1 and votingRecords[country][i]=='0':
@@ -46,8 +52,9 @@ def checkBestResponses():
             elif value>0 and votingRecords[country][i]=='2':
                 correctResponses+=1 
             else:
+                print("in "+votingRecords["Meeting Record"][i]+ " " + country + " voted against best response")
                 wrongResponses+=1
-            print(value)
+                print(str(value)+ " should have produced the vote of...")
     print("Number correct: "+str(correctResponses)+ " Number wrong: "+str(wrongResponses))
                 
             
@@ -109,18 +116,18 @@ def influenceGame():
                 for v in range(0,len(votingRecords[secondCountry])):
                     if votingRecords[currentCountry][v]=='1':
                         if votingRecords[secondCountry][v]=='0':
-                            influence[(currentCountry,secondCountry)]-=4
+                            influence[(currentCountry,secondCountry)]-=.5
                         elif votingRecords[secondCountry][v]=='1':
                             influence[(currentCountry,secondCountry)]+=1
                         elif votingRecords[secondCountry][v]=='2':
-                            influence[(currentCountry,secondCountry)]-=1 
+                            influence[(currentCountry,secondCountry)]-=.5 
                     if votingRecords[currentCountry][v]=='0':
                         if votingRecords[secondCountry][v]=='0':
-                            influence[(currentCountry,secondCountry)]+=4
+                            influence[(currentCountry,secondCountry)]+=3
                         elif votingRecords[secondCountry][v]=='1':
                             influence[(currentCountry,secondCountry)]-=1
                         elif votingRecords[secondCountry][v]=='2':
-                            influence[(currentCountry,secondCountry)]+=1 
+                            influence[(currentCountry,secondCountry)]+=1
                 influence[(currentCountry,secondCountry)]=influence[(currentCountry,secondCountry)]/100
                 print(currentCountry+"'s influence on "+secondCountry+" is "+str(influence[(currentCountry,secondCountry)]))
     #for key in influence.keys():
