@@ -3,13 +3,75 @@ infoString = ''
 keysArray=[]
 dataStack={}
 stateVotes={}
+influence={}
 numVotes=0
 
 def main():
     filename=input('Specify dataset: ')
     readInData(filename)
     countVotes()
-    dataComputations()
+    #dataComputations()
+    influenceGame()
+    checkBestResponses()
+    #checkVote()
+    
+    
+def checkBestResponses():
+    correctResponses=0
+    wrongResponses=0
+    countries=[]
+    untruncatedList=[]
+    for item in votingRecords.keys():
+        untruncatedList.append(item)
+    for i in range(1,len(untruncatedList)):
+        countries.append(untruncatedList[i])
+    for country in countries:
+        for i in range(0,len(votingRecords[country])):
+            value = 0
+            for key in influence:
+                if key[0]==country:
+                    secondVote=votingRecords[key[1]][i]
+                    print(secondVote)
+                    value+=(int(secondVote)*influence[(country,key[1])])
+            if value>=1 and votingRecords[country][i]=='1':
+                correctResponses+=1
+            elif value<=1 and votingRecords[country][i]=='0':
+                correctResponses+=1
+            elif value<=0 and votingRecords[country][i]=='0':
+                correctResponses+=1
+            elif value<=0 and votingRecords[country][i]=='2':
+                correctResponses+=1
+            elif value>0 and votingRecords[country][i]=='1':
+                correctResponses+=1
+            elif value>0 and votingRecords[country][i]=='2':
+                correctResponses+=1 
+            else:
+                wrongResponses+=1
+            print(value)
+    print("Number correct: "+str(correctResponses)+ " Number wrong: "+str(wrongResponses))
+                
+            
+        
+def checkVote():
+    currentCountry="Go"
+    while(currentCountry!="Stop"):
+        currentCountry=input("Whose vote is in question?")
+        global influence
+        value=0
+        for key in influence:
+            if key[0]==currentCountry:
+                countryVote=input("What is "+key[1]+"'s vote?")
+                vote=int(countryVote)
+                value+=(vote*influence[(currentCountry,key[1])])
+        if value>=1:
+            print(currentCountry+ " has best response of YES")
+        elif value<=-1:
+            print(currentCountry+ " has best response of NO")      
+        elif value>0:
+            print(currentCountry+ " has best response of ABSTAIN or YES")
+        elif value<=-0:
+            print(currentCountry+ " has best response of ABSTAIN or NO")        
+        print(value)
     
     
 def dataComputations():
@@ -36,6 +98,34 @@ def dataComputations():
         percentage=int(100*(int(dataStack[key])/stateVotes[key[0]][int(key[2])]))
         print(key[0]+vote+". "+key[1]+" also"+vote+ " at %" +str(percentage)+" frequency.")
     
+def influenceGame():
+    global influence, dataStack, keysArray, votingRecords
+    for i in range(1,len(keysArray)):
+        currentCountry=keysArray[i]
+        for j in range(1,len(keysArray)):
+            if i!=j:
+                secondCountry=keysArray[j]
+                influence[(currentCountry,secondCountry)]=0
+                for v in range(0,len(votingRecords[secondCountry])):
+                    if votingRecords[currentCountry][v]=='1':
+                        if votingRecords[secondCountry][v]=='0':
+                            influence[(currentCountry,secondCountry)]-=4
+                        elif votingRecords[secondCountry][v]=='1':
+                            influence[(currentCountry,secondCountry)]+=1
+                        elif votingRecords[secondCountry][v]=='2':
+                            influence[(currentCountry,secondCountry)]-=1 
+                    if votingRecords[currentCountry][v]=='0':
+                        if votingRecords[secondCountry][v]=='0':
+                            influence[(currentCountry,secondCountry)]+=4
+                        elif votingRecords[secondCountry][v]=='1':
+                            influence[(currentCountry,secondCountry)]-=1
+                        elif votingRecords[secondCountry][v]=='2':
+                            influence[(currentCountry,secondCountry)]+=1 
+                influence[(currentCountry,secondCountry)]=influence[(currentCountry,secondCountry)]/100
+                print(currentCountry+"'s influence on "+secondCountry+" is "+str(influence[(currentCountry,secondCountry)]))
+    #for key in influence.keys():
+        #print(key[1]+" influences "+key[0]+" with "+str(influence[key]))
+        
 def countVotes():
     global keysArray, votingRecords, stateVotes
     for i in range(1,len(keysArray)):
