@@ -13,7 +13,7 @@ def main():
     #dataComputations()
     influenceGame()
     checkBestResponses()
-    #checkVote()
+    checkVote()
     
     
 def checkBestResponses():
