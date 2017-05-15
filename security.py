@@ -38,7 +38,7 @@ def checkBestResponses():
                         influenceVote = 1
                     else:
                         influenceVote = -.25
-                    value+=(influenceVote*influence[(country,key[1])])
+                    value+=(influenceVote*influence[(key[1],country)])
             if value>=1 and votingRecords[country][i]=='1':
                 correctResponses+=1
             elif value<=1 and votingRecords[country][i]=='0':
@@ -69,7 +69,14 @@ def checkVote():
             if key[0]==currentCountry:
                 countryVote=input("What is "+key[1]+"'s vote?")
                 vote=int(countryVote)
-                value+=(vote*influence[(currentCountry,key[1])])
+                influenceVote=0
+                if countryVote == "0":
+                    influenceVote = -1
+                elif countryVote == "1":
+                    influenceVote = 1
+                else:
+                    influenceVote = -.25
+                value+=(influenceVote*influence[(key[1],currentCountry)])
         if value>=1:
             print(currentCountry+ " has best response of YES")
         elif value<=-1:
