@@ -1,7 +1,6 @@
 votingRecords = {}
 infoString = ''
 keysArray=[]
-dataStack={}
 stateVotes={}
 influence={}
 numVotes=0
@@ -43,7 +42,7 @@ def howToVote():
                     vote = -1
                 elif countryVote == 'abstain' or countryVote == 'a':
                     voteTrue=True
-                    vote = 0
+                    vote = -0.25
                 else:
                     print("Countries must vote yes/no/abstain")
             value += (vote * influence[(country, key[1])])
@@ -59,7 +58,7 @@ def howToVote():
     
     
 def influenceGame():
-    global influence, dataStack, keysArray, votingRecords
+    global influence, keysArray, votingRecords
     for i in range(1,len(keysArray)):
         currentCountry=keysArray[i]
         for j in range(1,len(keysArray)):
