@@ -36,8 +36,8 @@ def howToVote():
             elif countryVote == 'no':
                 vote = -1
             elif countryVote == 'abstain':
-                vote = 0
-            value += (vote * influence[(country, key[1])])
+                vote = -0.25
+            value += (vote * influence[(key[1],country)])
     if value >= 1:
         print("Your best response is YES")
     elif value <= -1:
