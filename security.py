@@ -72,7 +72,7 @@ def checkBestResponses():
                 #prints incorrect responses and their meeting date
                 print("in "+votingRecords["Meeting Record"][i]+ " " + country + " voted against best response")
                 wrongResponses+=1
-                print(str(value)+ " should have produced the vote of...")
+                print(str(value)+ " should have produced a different response")
     #prints the accuracy statement
     print("Number correct: "+str(correctResponses)+ " Number wrong: "+str(wrongResponses))
                 
