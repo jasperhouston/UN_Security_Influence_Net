@@ -26,17 +26,26 @@ def howToVote():
             country = country.title()        
         yesNo = input('You have selected ' + country + ', is this correct? (y/n) ')
     print(country)
+    if country not in keysArray:
+        print(country+" is not a permanent member of the UN Security Council!")
     global influence
     value = 0
     for key in influence:
         if key[0] == country:
-            countryVote = input("What is " + key[1] + "'s vote? (yes/no/abstain) ")
-            if countryVote == 'yes':
-                vote = 1
-            elif countryVote == 'no':
-                vote = -1
-            elif countryVote == 'abstain':
-                vote = 0
+            voteTrue=False
+            while voteTrue==False:
+                countryVote = input("What is " + key[1] + "'s vote? (yes/no/abstain) ")
+                if countryVote == 'yes' or countryVote == 'y':
+                    voteTrue=True
+                    vote = 1
+                elif countryVote == 'no' or countryVote == 'n':
+                    voteTrue=True
+                    vote = -1
+                elif countryVote == 'abstain' or countryVote == 'a':
+                    voteTrue=True
+                    vote = 0
+                else:
+                    print("Countries must vote yes/no/abstain")
             value += (vote * influence[(country, key[1])])
     if value >= 1:
         print("Your best response is YES")
@@ -46,7 +55,7 @@ def howToVote():
         print("Your best response is ABSTAIN or YES")
     elif value <= 0:
         print("Your best response is ABSTAIN or NO")        
-    print(value)
+    print("Your total influence was "+str(value))
     
     
 def influenceGame():
