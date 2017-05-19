@@ -14,6 +14,7 @@ def main():
     
     
 def howToVote():
+    #checks what country is represented by the user
     yesNo = 'n'
     while yesNo == 'n':
         country = input('What country do you represent? ')
@@ -24,11 +25,14 @@ def howToVote():
         else:
             country = country.title()        
         yesNo = input('You have selected ' + country + ', is this correct? (y/n) ')
-    print(country)
-    if country not in keysArray:
-        print(country+" is not a permanent member of the UN Security Council!")
+        if yesNo == 'y' and country not in keysArray:
+            yesNo = 'n'
+            print(country + " is not a permanent member of the UN Security Council!")        
+    print("Wonderful, " + country + " is a great country! Let's help you vote.")
     global influence
     value = 0
+    
+    #adjusts total influence
     for key in influence:
         if key[0] == country:
             voteTrue=False
@@ -46,6 +50,8 @@ def howToVote():
                 else:
                     print("Countries must vote yes/no/abstain")
             value += (vote * influence[(country, key[1])])
+            
+    #checks influence value against thresholds
     if value >= 1:
         print("Your best response is YES")
     elif value <= -1:

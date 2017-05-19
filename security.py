@@ -83,14 +83,14 @@ def checkVote():
     while(currentCountry!="Stop"):
         
         #asks for the vote of the country in question
-        currentCountry=input("Whose vote is in question?")
+        currentCountry=input("Whose vote is in question? ")
         global influence
         value=0
         for key in influence:
             if key[0]==currentCountry:
                 
                 #asks for the votes of the other countries
-                countryVote=input("What is "+key[1]+"'s vote?")
+                countryVote=input("What is "+key[1]+"'s vote? ")
                 vote=int(countryVote)
                 influenceVote=0
                 if countryVote == "0":
